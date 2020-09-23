@@ -7,7 +7,6 @@ package com.lab3;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -41,12 +40,12 @@ public class Main {
             index1 = index2;
             index2 = line.indexOf(' ', index1 + 1);
         }
-        words.add(index1 == 0 ? line.substring(0) : line.substring(index1 + 1));
+        words.add(index1 == 0 ? line : line.substring(index1 + 1));
         return words;
     }
 
     private static int countUniqueSymbols(String word) {
-        HashSet<Character> charSet = new HashSet<Character>();
+        HashSet<Character> charSet = new HashSet<>();
         char[] charArr = word.toCharArray();
         for (Character ch : charArr) {
             charSet.add(Character.toLowerCase(ch));
