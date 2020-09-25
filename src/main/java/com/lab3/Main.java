@@ -1,24 +1,20 @@
 package com.lab3;
+import java.util.*;
 
-//В каждой строке текста найти слово, в котором число различных символов минимально.
-// Слово может содержать буквы и цифры. Если таких слов несколько, вывести первое из них.
-// Вывести в формате: строка -> слово: кол-во_различных_символов
-//        Например, для строки “ab ffff 1234 f jksk” -> ffff: 1
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Scanner;
-
+/**
+ * В каждой строке текста найти слово, в котором число различных символов минимально.
+ * Слово может содержать буквы и цифры. Если таких слов несколько, вывести первое из них.
+ * Вывести в формате: строка -> слово: кол-во_различных_символов
+ * Например, для строки “ab ffff 1234 f jksk” -> ffff: 1
+ */
 public class Main {
-    private static final String END_LINE = "";
-
     public static void main(String[] args) {
         System.out.println("Enter text(double Enter to finish):");
         try (Scanner scanner = new Scanner(System.in)) {
             String line;
             int lineInd = 0;
-            while (!(line = scanner.nextLine()).equals(END_LINE)) {
-                System.out.println(line + " -> " + lineInd + " : " + leastNumOfUniqueSymbols(line));
+            while (!(line = scanner.nextLine()).isEmpty()) {
+                System.out.println(line + " -> " + lineInd + " : " + wordWithLeastUniqueSymbols(line));
                 ++lineInd;
             }
         } catch (Exception ex) {
@@ -26,36 +22,19 @@ public class Main {
         }
     }
 
-    private static ArrayList<String> parseLine(String line) {
-        ArrayList<String> words = new ArrayList<>();
-        line = line.trim();
-        int index1 = 0;
-        int index2 = line.indexOf(' ');
-        String word;
-        while (index2 != -1) {
-            word = index1 == 0 ? line.substring(0, index2) : line.substring(index1 + 1, index2);
-            if (!word.isEmpty()) {
-                words.add(word);
-            }
-            index1 = index2;
-            index2 = line.indexOf(' ', index1 + 1);
-        }
-        words.add(index1 == 0 ? line : line.substring(index1 + 1));
-        return words;
-    }
-
     private static int countUniqueSymbols(String word) {
-        HashSet<Character> charSet = new HashSet<>();
-        char[] charArr = word.toCharArray();
+        Set<Character> charSet = new HashSet<>();
+        char[] charArr = word.toLowerCase().toCharArray();
         for (Character ch : charArr) {
-            charSet.add(Character.toLowerCase(ch));
+            charSet.add(ch);
         }
         return charSet.size();
     }
 
-    public static String leastNumOfUniqueSymbols(String line) {
-        ArrayList<String> words = parseLine(line);
-        String minWord = null;
+    public static String wordWithLeastUniqueSymbols(String line) {
+        line = line.trim();
+        String[] words = line.split(" +");
+        String minWord = "";
         int minCount = Integer.MAX_VALUE;
         int count;
         for (String word : words) {
